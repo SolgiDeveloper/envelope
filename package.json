@@ -1,21 +1,17 @@
 {
-  "name": "expense-tracker-electron",
-  "version": "0.7.0",
-  "description": "Expense Tracker Stackathon Project using Electron.js D3 and React Hooks",
-  "author": "Danny Berger",
-  "homepage": "https://github.com/KungoJung/expense-tracker-electron",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/KungoJung/expense-tracker-electron.git"
-  },
-  "license": "none",
+  "name": "simorgh",
+  "productName": "simorgh",
+  "version": "0.1.0",
+  "description": "Simorgh another Project using Electron.js D3 and React Hooks",
+  "author": "Mohammad Solgi",
+  "license": "MIT",
   "main": "main.js",
   "scripts": {
     "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
     "dev": "webpack-dev-server --hot --host 0.0.0.0 --port 4000 --config=./webpack.dev.config.js",
     "build": "webpack --config webpack.build.config.js",
     "package": "webpack --config webpack.build.config.js",
-    "postpackage": "electron-packager ./ --out=./builds"
+    "postpackage": "electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=ClientApp/assets/icons/letter-desktop.ico --prune=false --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"APP NAME\""
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -37,8 +33,15 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.8",
+    "@fortawesome/fontawesome-free-regular": "^5.0.13",
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/react-fontawesome": "^0.1.16",
     "bootstrap": "^4.3.1",
     "electron-json-storage": "^4.3.0",
-    "react-bootstrap": "^1.0.0-beta.9"
+    "font-awesome": "^4.7.0",
+    "react-bootstrap": "^1.0.0-beta.9",
+    "react-router-dom": "^6.2.1"
   }
 }

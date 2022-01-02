@@ -27,6 +27,7 @@ const defaultDataPath = storage.getDefaultDataPath();
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    title: 'simorgh',
     width: 1024,
     height: 768,
     show: false,
@@ -34,7 +35,7 @@ function createWindow() {
 			nodeIntegration: true,
 			contextIsolation: false,
 		},
-    icon: __dirname + "/public/Lobster.icns"
+    icon: __dirname + "/ClientApp/assets/icons/letter2.png"
   });
 
   // and load the index.html of the app.

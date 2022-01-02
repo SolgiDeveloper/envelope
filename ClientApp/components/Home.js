@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from "react-bootstrap/InputGroup";
 import {loadSavedData, saveDataInStorage} from "../renderer.js";
 import List from "./List";
+import Header from "./Header";
 const { ipcRenderer } = require("electron");
 const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, HANDLE_REMOVE_DATA } = require("../../utils/constants")
 import './home.scss'
@@ -16,7 +17,6 @@ const Home = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   // Grab the user's saved itemsToTrack after the app loads
   useEffect(() => {
     loadSavedData();
@@ -81,6 +81,7 @@ const Home = () => {
 
   return (
     <React.Fragment>
+      <Header/>
       <Button variant="primary" onClick={handleShow}>
         Launch static backdrop modal
       </Button>

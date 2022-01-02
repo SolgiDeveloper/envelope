@@ -9,13 +9,13 @@ const List = ({itemsToTrack}) => {
       <thead>
       <tr>
         <th></th>
-        <th>Item</th>
-        <th>Item</th>
-        <th>Item</th>
-        <th>Item</th>
-        <th>Item</th>
-        <th>Item</th>
-        <th>Item</th>
+        <th>پیوست</th>
+        <th>تاریخ ارسال</th>
+        <th>اقدامگر</th>
+        <th>گیرنده نامه</th>
+        <th>موضوع نامه</th>
+        <th>تاریخ</th>
+        <th>شماره نامه</th>
       </tr>
       </thead>
       <tbody>

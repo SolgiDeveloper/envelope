@@ -7,17 +7,25 @@ import Header from "./Header";
 const { ipcRenderer } = require("electron");
 const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, HANDLE_REMOVE_DATA } = require("../../utils/constants")
 import './home.scss'
-import {Modal} from "react-bootstrap";
+import MyModal from "./MyModal";
 
 const Home = () => {
   const [val, setVal] = useState("");
   const [name, setName] = useState("");
   const [receivedEnvelope, setReceivedEnvelope] = useState([]);
+  const [sendEnvelope, setSendEnvelope] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // Grab the user's saved receivedEnvelope after the app loads
+
+  const [SModal, setSModal] = useState(false);
+  const [REModal, setREModal] = useState(false);
+
+  const [showReceivedEnvelope, setShowReceivedEnvelope] = useState(false);
+  const [showSendEnvelope, setShowSendEnvelope] = useState(true);
+
+  // Grab the user's saved sendEnvelope after the app loads
   useEffect(() => {
     loadSavedData();
   }, []);
@@ -43,15 +51,15 @@ const Home = () => {
     }
   });
 
-  // Receives receivedEnvelope from main and sets the state
+  // Receives sendEnvelope from main and sets the state
   const handleReceiveData = (event, data) => {
     console.log('data',data)
-    setReceivedEnvelope([...data.message]);
+    setSendEnvelope([...data.message]);
   };
 
   // Receives a new item back from main
   const handleNewItem = (event, data) => {
-    setReceivedEnvelope([...receivedEnvelope, data.message])
+    setSendEnvelope([...sendEnvelope, data.message])
   }
 
   // Manage state and input field
@@ -63,12 +71,12 @@ const Home = () => {
   }
 
   // Send the input to main
-  const addItem = (val,name) => {
+  const addSendEnvelope = () => {
     let id
-    if (receivedEnvelope.length === 0){
-     id = receivedEnvelope.length
+    if (sendEnvelope.length === 0){
+     id = sendEnvelope.length
     }else{
-     id = receivedEnvelope[receivedEnvelope.length -1][0] + 1
+     id = sendEnvelope[sendEnvelope.length -1][0] + 1
     }
     const data =[]
     data[0] = id
@@ -77,49 +85,64 @@ const Home = () => {
     saveDataInStorage(data)
     setVal("")
     setName("")
+    setSModal(false)
+  }
+
+  const addReceivedEnvelope = () => {
+
+  }
+  const showSendEnvelopeHandler = () => {
+    setShowReceivedEnvelope(false)
+    setShowSendEnvelope(true)
+  }
+  const showReceivedEnvelopeHandler = () => {
+    setShowSendEnvelope(false)
+    setShowReceivedEnvelope(true)
   }
 
   return (
     <React.Fragment>
-      <Header/>
-      <Button variant="primary" onClick={handleShow}>
-        Launch static backdrop modal
-      </Button>
+      <Header
+        makeSendEnvelope={()=>setSModal(true)}
+        makeReceivedEnvelope={()=>setREModal(true)}
+        showSendEnvelope={showSendEnvelopeHandler}
+        showReceivedEnvelope={showReceivedEnvelopeHandler}
+      />
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          I will not close if you click outside me. Don't even try to press
-          escape key.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary">Understood</Button>
-        </Modal.Footer>
-      </Modal>
+      <MyModal
+        modalTitle='ایجاد نامه ارسالی'
+        saveBtnTitle='ذخیره'
+        closeBtnTitle='بستن'
+        onSave={addSendEnvelope}
+        show={SModal} onClick={()=>setSModal(false)}
+        onHide={()=>setSModal(false)}>
+        <InputGroup className="mb-3">
+          <input type="text" onChange={handleChange} value={val}/>
+          <input type="text" onChange={handleChangeName} value={name}/>
+        </InputGroup>
+      </MyModal>
 
-      <InputGroup className="mb-3">
-        <InputGroup.Prepend>
-          <Button variant="outline-primary" onClick={() => addItem(val,name)}>New Item</Button>
-        </InputGroup.Prepend>
-        <input type="text" onChange={handleChange} value={val}/>
-        <input type="text" onChange={handleChangeName} value={name}/>
-      </InputGroup>
-      {receivedEnvelope.length ? (
+      <MyModal
+        modalTitle='ایجاد نامه دریافتی'
+        saveBtnTitle='ذخیره'
+        closeBtnTitle='بستن'
+        onSave={addReceivedEnvelope}
+        show={REModal} onClick={()=>setREModal(false)}
+        onHide={()=>setREModal(false)}>
+
+      </MyModal>
+
+      {!!sendEnvelope.length && showSendEnvelope && (
         <div className='table-container'>
-          <List itemsToTrack={receivedEnvelope} />
+          <div className='send-envelope__title my-2'>لیست نامه های ارسالی</div>
+          <List itemsToTrack={sendEnvelope} />
         </div>
-      ) : (
-        <p>Add an item to get started</p>
+      )}
+      {!sendEnvelope.length && !showReceivedEnvelope &&(
+        <div className='send-envelope__title my-2'>
+          <p dir='rtl'>لیست نامه های ارسالی خالی است!</p>
+        </div>
+
       )}
     </React.Fragment>
   )

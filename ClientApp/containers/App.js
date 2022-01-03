@@ -5,9 +5,9 @@ import Routes from '../components/Routes';
 class App extends Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Routes />
-      </div>
+      </React.Fragment>
     );
   }
 }

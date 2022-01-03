@@ -11,8 +11,8 @@ const storage = require("electron-json-storage")
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-// A reference to the receivedEnvelope array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
-let receivedEnvelope;
+// A reference to the sendEnvelope array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
+let sendEnvelope;
 
 // Keep a reference for dev mode
 let dev = false;
@@ -108,21 +108,21 @@ app.on('activate', () => {
 // Receives a FETCH_DATA_FROM_STORAGE from renderer
 ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
   console.log("Main received: FETCH_DATA_FROM_STORAGE with message:", message)
-  // Get the user's receivedEnvelope from storage
-  // For our purposes, message = receivedEnvelope array
+  // Get the user's sendEnvelope from storage
+  // For our purposes, message = sendEnvelope array
   storage.get(message, (error, data) => {
-    // if the receivedEnvelope key does not yet exist in storage, data returns an empty object, so we will declare receivedEnvelope to be an empty array
-    receivedEnvelope = JSON.stringify(data) === '{}' ? [] : data;
+    // if the sendEnvelope key does not yet exist in storage, data returns an empty object, so we will declare receivedEnvelope to be an empty array
+    sendEnvelope = JSON.stringify(data) === '{}' ? [] : data;
     if (error) {
       mainWindow.send(HANDLE_FETCH_DATA, {
         success: false,
-        message: "receivedEnvelope not returned",
+        message: "sendEnvelope not returned",
       })
     } else {
       // Send message back to window
       mainWindow.send(HANDLE_FETCH_DATA, {
         success: true,
-        message: receivedEnvelope, // do something with the data
+        message: sendEnvelope, // do something with the data
       })
     }
   })
@@ -131,15 +131,15 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
 // Receive a SAVE_DATA_IN_STORAGE call from renderer
 ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
   console.log("Main received: SAVE_DATA_IN_STORAGE")
-  // update the receivedEnvelope array.
-  receivedEnvelope.push(message)
-  // Save receivedEnvelope to storage
-  storage.set("receivedEnvelope", receivedEnvelope, (error) => {
+  // update the sendEnvelope array.
+  sendEnvelope.push(message)
+  // Save sendEnvelope to storage
+  storage.set("sendEnvelope", sendEnvelope, (error) => {
     if (error) {
       console.log("We errored! What was data?")
       mainWindow.send(HANDLE_SAVE_DATA, {
         success: false,
-        message: "receivedEnvelope not saved",
+        message: "sendEnvelope not saved",
       })
     } else {
       // Send message back to window as 2nd arg "data"
@@ -156,21 +156,21 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, id) => {
   console.log('Main Received: REMOVE_DATA_FROM_STORAGE55555555')
   // Update the items to Track array.
   console.log('id',id)
-  receivedEnvelope = receivedEnvelope.filter(item => item[0] !== id)
-  // receivedEnvelope =[]
+  sendEnvelope = sendEnvelope.filter(item => item[0] !== id)
+  // sendEnvelope =[]
   // Save receivedEnvelope to storage
-  storage.set("receivedEnvelope", receivedEnvelope, (error) => {
+  storage.set("sendEnvelope", sendEnvelope, (error) => {
     if (error) {
       console.log("We errored! What was data?")
       mainWindow.send(HANDLE_REMOVE_DATA, {
         success: false,
-        message: "receivedEnvelope not saved",
+        message: "sendEnvelope not saved",
       })
     } else {
       // Send new updated array to window as 2nd arg "data"
       mainWindow.send(HANDLE_REMOVE_DATA, {
         success: true,
-        message: receivedEnvelope,
+        message: sendEnvelope,
       })
     }
   })

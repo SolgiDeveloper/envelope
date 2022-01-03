@@ -11,7 +11,7 @@ const { FETCH_DATA_FROM_STORAGE, SAVE_DATA_IN_STORAGE, REMOVE_DATA_FROM_STORAGE}
 // Ask main to load data from its persistent storage
 function loadSavedData() {
   console.log("Renderer sending: FETCH_DATA_FROM_STORAGE")
-  ipcRenderer.send(FETCH_DATA_FROM_STORAGE, "receivedEnvelope")
+  ipcRenderer.send(FETCH_DATA_FROM_STORAGE, "sendEnvelope")
 }
 
 // Send item message to main

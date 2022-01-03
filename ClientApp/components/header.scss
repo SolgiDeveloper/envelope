@@ -1,3 +1,19 @@
 .search-bar{
   width: 500px !important;
 }
+.dropdown-menu{
+  left: -155px !important;
+}
+.dropdown-toggle::after {
+  margin-left: 0.255em !important;
+  margin-right: 10px !important;
+}
+.modal-footer{
+  justify-content: flex-start !important;
+}
+.modal-header .close{
+  margin: -1rem !important;
+}
+.modal-header{
+  flex-direction: row-reverse;
+}

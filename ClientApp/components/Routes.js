@@ -4,9 +4,9 @@ import Home from "./Home"
 const Routes = () => {
 
   return (
-    <div>
+    <React.Fragment>
       <Home />
-    </div>
+    </React.Fragment>
   )
 };
 

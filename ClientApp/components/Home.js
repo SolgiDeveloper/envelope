@@ -12,12 +12,12 @@ import {Modal} from "react-bootstrap";
 const Home = () => {
   const [val, setVal] = useState("");
   const [name, setName] = useState("");
-  const [itemsToTrack, setItems] = useState([]);
+  const [receivedEnvelope, setReceivedEnvelope] = useState([]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // Grab the user's saved itemsToTrack after the app loads
+  // Grab the user's saved receivedEnvelope after the app loads
   useEffect(() => {
     loadSavedData();
   }, []);
@@ -43,15 +43,15 @@ const Home = () => {
     }
   });
 
-  // Receives itemsToTrack from main and sets the state
+  // Receives receivedEnvelope from main and sets the state
   const handleReceiveData = (event, data) => {
     console.log('data',data)
-    setItems([...data.message]);
+    setReceivedEnvelope([...data.message]);
   };
 
   // Receives a new item back from main
   const handleNewItem = (event, data) => {
-    setItems([...itemsToTrack, data.message])
+    setReceivedEnvelope([...receivedEnvelope, data.message])
   }
 
   // Manage state and input field
@@ -65,10 +65,10 @@ const Home = () => {
   // Send the input to main
   const addItem = (val,name) => {
     let id
-    if (itemsToTrack.length === 0){
-     id = itemsToTrack.length
+    if (receivedEnvelope.length === 0){
+     id = receivedEnvelope.length
     }else{
-     id = itemsToTrack[itemsToTrack.length -1][0] + 1
+     id = receivedEnvelope[receivedEnvelope.length -1][0] + 1
     }
     const data =[]
     data[0] = id
@@ -114,9 +114,9 @@ const Home = () => {
         <input type="text" onChange={handleChange} value={val}/>
         <input type="text" onChange={handleChangeName} value={name}/>
       </InputGroup>
-      {itemsToTrack.length ? (
+      {receivedEnvelope.length ? (
         <div className='table-container'>
-          <List itemsToTrack={itemsToTrack} />
+          <List itemsToTrack={receivedEnvelope} />
         </div>
       ) : (
         <p>Add an item to get started</p>

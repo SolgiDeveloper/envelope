@@ -10,14 +10,21 @@ import './home.scss'
 import MyModal from "./MyModal";
 
 const Home = () => {
-  const [val, setVal] = useState("");
-  const [name, setName] = useState("");
+  const [sendEnvDate, setSendEnvDate] = useState("");
+  const [sendEnvSubject, setSendEnvSubject] = useState("");
+  const [sendEnvReceiver, setSendEnvReceiver] = useState("");
+  const [sendEnvActor, setSendEnvActor] = useState("");
+  const [sendEnvSendDate, setSendEnvSendDate] = useState("");
+  const [sendEnvAtach, setSendEnvAtach] = useState("");
+
+
+
+
+
+
   const [receivedEnvelope, setReceivedEnvelope] = useState([]);
   const [sendEnvelope, setSendEnvelope] = useState([]);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const [SModal, setSModal] = useState(false);
   const [REModal, setREModal] = useState(false);
@@ -62,13 +69,6 @@ const Home = () => {
     setSendEnvelope([...sendEnvelope, data.message])
   }
 
-  // Manage state and input field
-  const handleChange = (e) => {
-    setVal(e.target.value)
-  }
-  const handleChangeName = (e)=>{
-   setName(e.target.value)
-  }
 
   // Send the input to main
   const addSendEnvelope = () => {
@@ -76,15 +76,26 @@ const Home = () => {
     if (sendEnvelope.length === 0){
      id = sendEnvelope.length
     }else{
-     id = sendEnvelope[sendEnvelope.length -1][0] + 1
+     id = sendEnvelope[sendEnvelope.length -1][1] + 1
     }
+    const sendEnvNumber = 1000 + id
     const data =[]
-    data[0] = id
-    data[1] = val
-    data[2] = name
+    data[0] = 'send'
+    data[1] = id
+    data[2] = sendEnvNumber
+    data[3] = sendEnvDate
+    data[4] = sendEnvSubject
+    data[5] = sendEnvReceiver
+    data[6] = sendEnvActor
+    data[7] = sendEnvSendDate
+    data[8] = sendEnvAtach
     saveDataInStorage(data)
-    setVal("")
-    setName("")
+    setSendEnvDate("")
+    setSendEnvSubject("")
+    setSendEnvReceiver("")
+    setSendEnvActor("")
+    setSendEnvSendDate("")
+    setSendEnvAtach("")
     setSModal(false)
   }
 
@@ -113,19 +124,25 @@ const Home = () => {
         modalTitle='ایجاد نامه ارسالی'
         saveBtnTitle='ذخیره'
         closeBtnTitle='بستن'
+        saveBtnColor='success'
         onSave={addSendEnvelope}
         show={SModal} onClick={()=>setSModal(false)}
         onHide={()=>setSModal(false)}>
-
-          <input type="text" onChange={handleChange} value={val}/>
-          <input type="text" onChange={handleChangeName} value={name}/>
-
+          <div className='d-flex flex-column'>
+            <input type="text" onChange={(e)=>setSendEnvDate(e.target.value)} value={sendEnvDate}/>
+            <input type="text" onChange={(e)=>setSendEnvSubject(e.target.value)} value={sendEnvSubject}/>
+            <input type="text" onChange={(e)=>setSendEnvReceiver(e.target.value)} value={sendEnvReceiver}/>
+            <input type="text" onChange={(e)=>setSendEnvActor(e.target.value)} value={sendEnvActor}/>
+            <input type="text" onChange={(e)=>setSendEnvSendDate(e.target.value)} value={sendEnvSendDate}/>
+            <input type="text" onChange={(e)=>setSendEnvAtach(e.target.value)} value={sendEnvAtach}/>
+          </div>
       </MyModal>
 
       <MyModal
         modalTitle='ایجاد نامه دریافتی'
         saveBtnTitle='ذخیره'
         closeBtnTitle='بستن'
+        saveBtnColor='success'
         onSave={addReceivedEnvelope}
         show={REModal} onClick={()=>setREModal(false)}
         onHide={()=>setREModal(false)}>

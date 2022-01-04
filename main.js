@@ -156,7 +156,7 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, id) => {
   console.log('Main Received: REMOVE_DATA_FROM_STORAGE55555555')
   // Update the items to Track array.
   console.log('id',id)
-  sendEnvelope = sendEnvelope.filter(item => item[0] !== id)
+  sendEnvelope = sendEnvelope.filter(item => item[1] !== id)
   // sendEnvelope =[]
   // Save receivedEnvelope to storage
   storage.set("sendEnvelope", sendEnvelope, (error) => {

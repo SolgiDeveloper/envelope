@@ -116,10 +116,10 @@ const Home = () => {
         onSave={addSendEnvelope}
         show={SModal} onClick={()=>setSModal(false)}
         onHide={()=>setSModal(false)}>
-        <InputGroup className="mb-3">
+
           <input type="text" onChange={handleChange} value={val}/>
           <input type="text" onChange={handleChangeName} value={name}/>
-        </InputGroup>
+
       </MyModal>
 
       <MyModal

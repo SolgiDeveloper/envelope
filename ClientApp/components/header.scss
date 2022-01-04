@@ -2,9 +2,17 @@
   width: 500px !important;
 }
 .dropdown-menu{
-  left: -155px !important;
+  left: -95px !important;
+  padding: 0 !important;
+  width: 10rem !important;
+  top: 110% !important;
 }
-.dropdown-toggle::after {
+.dropdown-item{
+  padding: 2px 8px !important;
+  text-align: right !important;
+}
+
+ .dropdown-toggle::after {
   margin-left: 0.255em !important;
   margin-right: 10px !important;
 }

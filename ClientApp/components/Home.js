@@ -15,6 +15,7 @@ const Home = () => {
   const [sendEnvActor, setSendEnvActor] = useState("");
   const [sendEnvSendDate, setSendEnvSendDate] = useState("");
   const [sendEnvAtach, setSendEnvAtach] = useState("");
+  const [sendEnvAtach2, setSendEnvAtach2] = useState("");
   const [sendEnvFile, setSendEnvFile] = useState("");
 
   const [recEnvNumber, setRecEnvNumber] = useState("");
@@ -24,6 +25,7 @@ const Home = () => {
   const [recEnvActor, setRecEnvActor] = useState("");
   const [recEnvRecDate, setRecEnvRecDate] = useState("");
   const [recEnvAtach, setRecEnvAtach] = useState("");
+  const [recEnvAtach2, setRecEnvAtach2] = useState("");
   const [recEnvFile, setRecEnvFile] = useState("");
 
 
@@ -93,6 +95,7 @@ const Home = () => {
     data[7] = sendEnvSendDate
     data[8] = sendEnvAtach
     data[9] = sendEnvFile
+    data[10] = sendEnvAtach2
     saveDataInStorage(data)
     setSendEnvDate("")
     setSendEnvSubject("")
@@ -100,6 +103,7 @@ const Home = () => {
     setSendEnvActor("")
     setSendEnvSendDate("")
     setSendEnvAtach("")
+    setSendEnvAtach2("")
     setSendEnvFile("")
     setSModal(false)
     setShowSendEnvelope(true)
@@ -126,6 +130,7 @@ const Home = () => {
     data[8] = recEnvAtach
     data[9] = recEnvNumber
     data[10] = recEnvFile
+    data[11] = recEnvAtach2
     saveDataInStorage(data)
     setRecEnvDate("")
     setRecEnvSubject("")
@@ -133,6 +138,7 @@ const Home = () => {
     setRecEnvActor("")
     setRecEnvRecDate("")
     setRecEnvAtach("")
+    setRecEnvAtach2("")
     setRecEnvNumber("")
     setRecEnvFile("")
     setREModal(false)
@@ -170,7 +176,7 @@ const Home = () => {
         show={SModal} onClick={()=>setSModal(false)}
         onHide={()=>setSModal(false)}>
           <div className='d-flex flex-column'>
-            <div className='d-flex justify-content-between w-350 mb-1'>
+            <div className='d-flex justify-content-between w-390 mb-1'>
               <DatePicker
                 inputComponent={DatePickerInput}
                 placeholder="انتخاب تاریخ"
@@ -181,19 +187,19 @@ const Home = () => {
               />
              <span>تاریخ</span>
             </div>
-            <div className='d-flex justify-content-between w-350 mb-1'>
+            <div className='d-flex justify-content-between w-390 mb-1'>
               <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvSubject(e.target.value)} value={sendEnvSubject}/>
               <span>موضوع نامه</span>
             </div>
-            <div className='d-flex justify-content-between w-350 mb-1'>
+            <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvReceiver(e.target.value)} value={sendEnvReceiver}/>
               <span>گیرنده نامه</span>
             </div>
-            <div className='d-flex justify-content-between w-350 mb-1'>
+            <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvActor(e.target.value)} value={sendEnvActor}/>
               <span>اقدامگر</span>
             </div>
-            <div className='d-flex justify-content-between w-350 mb-1'>
+            <div className='d-flex justify-content-between w-390 mb-1'>
               <DatePicker
                 inputComponent={DatePickerInput}
                 placeholder="انتخاب تاریخ"
@@ -204,19 +210,26 @@ const Home = () => {
               />
               <span>تاریخ ارسال</span>
             </div>
-            <div className='d-flex justify-content-between w-350'>
+            <div className='d-flex justify-content-between w-390'>
               <div className="btn d-flex">
-                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                        onChange={(e)=>setSendEnvFile(e.target.files[0].path)}/>
               </div>
               <span>فایل نامه</span>
             </div>
-            <div className='d-flex justify-content-between w-350'>
+            <div className='d-flex justify-content-between w-390'>
               <div className="btn d-flex">
-                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                        onChange={(e)=>setSendEnvAtach(e.target.files[0].path)}/>
               </div>
-              <span>فایل پیوست</span>
+              <span>فایل پیوست 1</span>
+            </div>
+            <div className='d-flex justify-content-between w-390'>
+              <div className="btn d-flex">
+                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
+                       onChange={(e)=>setSendEnvAtach2(e.target.files[0].path)}/>
+              </div>
+              <span>فایل پیوست 2</span>
             </div>
           </div>
       </MyModal>
@@ -230,11 +243,11 @@ const Home = () => {
         show={REModal} onClick={()=>setREModal(false)}
         onHide={()=>setREModal(false)}>
         <div className='d-flex flex-column'>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvNumber(e.target.value)} value={recEnvNumber}/>
             <span>شماره نامه</span>
           </div>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <DatePicker
               inputComponent={DatePickerInput}
               placeholder="انتخاب تاریخ"
@@ -245,19 +258,19 @@ const Home = () => {
             />
             <span>تاریخ</span>
           </div>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvSubject(e.target.value)} value={recEnvSubject}/>
             <span>موضوع نامه</span>
           </div>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvOwner(e.target.value)} value={recEnvOwner}/>
             <span>صاحب نامه</span>
           </div>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvActor(e.target.value)} value={recEnvActor}/>
             <span>مرجع رسیدگی کننده</span>
           </div>
-          <div className='d-flex justify-content-between w-350 mb-1'>
+          <div className='d-flex justify-content-between w-390 mb-1'>
             <DatePicker
               inputComponent={DatePickerInput}
               placeholder="انتخاب تاریخ"
@@ -268,20 +281,28 @@ const Home = () => {
             />
             <span>تاریخ دریافت</span>
           </div>
-          <div className='d-flex justify-content-between w-350'>
+          <div className='d-flex justify-content-between w-390'>
             <div className="btn d-flex">
-              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                      onChange={(e)=>setRecEnvFile(e.target.files[0].path)}/>
             </div>
             <span>فایل نامه</span>
           </div>
-          <div className='d-flex justify-content-between w-350'>
+          <div className='d-flex justify-content-between w-390'>
             <div className="btn d-flex">
-              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                      onChange={(e)=>setRecEnvAtach(e.target.files[0].path)}/>
             </div>
-            <span>فایل پیوست</span>
+            <span>فایل پیوست 1</span>
           </div>
+          <div className='d-flex justify-content-between w-390'>
+            <div className="btn d-flex">
+              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
+                     onChange={(e)=>setRecEnvAtach2(e.target.files[0].path)}/>
+            </div>
+            <span>فایل پیوست 2</span>
+          </div>
+
         </div>
       </MyModal>
 

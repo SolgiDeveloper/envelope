@@ -61,13 +61,18 @@ const SendEnvList = ({itemsToTrack}) => {
                     </td>
                     <td>
                     {item[8].length !== 0 ? (
-                      <Button
+                      <Button className='mr-1'
                       variant="outline-success"
                       onClick={() => callToOpenFile(item[8])}>
-                      <FontAwesomeIcon icon={faPaperclip}/>
+                      <FontAwesomeIcon icon={faPaperclip}/> 1
                       </Button>) : "ندارد"}
+                      {item[10].length !== 0 ? (
+                        <Button
+                          variant="outline-success"
+                          onClick={() => callToOpenFile(item[10])}>
+                          <FontAwesomeIcon icon={faPaperclip}/> 2
+                        </Button>) : ""}
                     </td>
-
                     <td>
                       {item[9].length !== 0 ? (
                         <Button

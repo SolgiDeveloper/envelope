@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import Button from 'react-bootstrap/Button';
-import InputGroup from "react-bootstrap/InputGroup";
 import {loadSavedData, saveDataInStorage} from "../renderer.js";
-import List from "./List";
+import SendEnvList from "./SendEnvList";
 import Header from "./Header";
 const { ipcRenderer } = require("electron");
 const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, HANDLE_REMOVE_DATA } = require("../../utils/constants")
 import './home.scss'
 import MyModal from "./MyModal";
-
+import {DatePicker} from "react-advance-jalaali-datepicker";
+import RecEnvList from "./RecEnvList";
 const Home = () => {
   const [sendEnvDate, setSendEnvDate] = useState("");
   const [sendEnvSubject, setSendEnvSubject] = useState("");
@@ -16,15 +15,19 @@ const Home = () => {
   const [sendEnvActor, setSendEnvActor] = useState("");
   const [sendEnvSendDate, setSendEnvSendDate] = useState("");
   const [sendEnvAtach, setSendEnvAtach] = useState("");
+  const [sendEnvFile, setSendEnvFile] = useState("");
+
+  const [recEnvNumber, setRecEnvNumber] = useState("");
+  const [recEnvDate, setRecEnvDate] = useState("");
+  const [recEnvSubject, setRecEnvSubject] = useState("");
+  const [recEnvOwner, setRecEnvOwner] = useState("");
+  const [recEnvActor, setRecEnvActor] = useState("");
+  const [recEnvRecDate, setRecEnvRecDate] = useState("");
+  const [recEnvAtach, setRecEnvAtach] = useState("");
+  const [recEnvFile, setRecEnvFile] = useState("");
 
 
-
-
-
-
-  const [receivedEnvelope, setReceivedEnvelope] = useState([]);
   const [sendEnvelope, setSendEnvelope] = useState([]);
-
 
   const [SModal, setSModal] = useState(false);
   const [REModal, setREModal] = useState(false);
@@ -89,6 +92,7 @@ const Home = () => {
     data[6] = sendEnvActor
     data[7] = sendEnvSendDate
     data[8] = sendEnvAtach
+    data[9] = sendEnvFile
     saveDataInStorage(data)
     setSendEnvDate("")
     setSendEnvSubject("")
@@ -96,11 +100,44 @@ const Home = () => {
     setSendEnvActor("")
     setSendEnvSendDate("")
     setSendEnvAtach("")
+    setSendEnvFile("")
     setSModal(false)
+    setShowSendEnvelope(true)
+    setShowReceivedEnvelope(false)
   }
 
   const addReceivedEnvelope = () => {
-
+    let id
+    if (sendEnvelope.length === 0){
+      id = sendEnvelope.length
+    }else{
+      id = sendEnvelope[sendEnvelope.length -1][1] + 1
+    }
+    const receiveEnvNumber = 1000 + id
+    const data =[]
+    data[0] = 'receive'
+    data[1] = id
+    data[2] = receiveEnvNumber
+    data[3] = recEnvDate
+    data[4] = recEnvSubject
+    data[5] = recEnvOwner
+    data[6] = recEnvActor
+    data[7] = recEnvRecDate
+    data[8] = recEnvAtach
+    data[9] = recEnvNumber
+    data[10] = recEnvFile
+    saveDataInStorage(data)
+    setRecEnvDate("")
+    setRecEnvSubject("")
+    setRecEnvOwner("")
+    setRecEnvActor("")
+    setRecEnvRecDate("")
+    setRecEnvAtach("")
+    setRecEnvNumber("")
+    setRecEnvFile("")
+    setREModal(false)
+    setShowReceivedEnvelope(true)
+    setShowSendEnvelope(false)
   }
   const showSendEnvelopeHandler = () => {
     setShowReceivedEnvelope(false)
@@ -109,6 +146,10 @@ const Home = () => {
   const showReceivedEnvelopeHandler = () => {
     setShowSendEnvelope(false)
     setShowReceivedEnvelope(true)
+  }
+
+  const DatePickerInput =(props) => {
+    return <input className="date-picker__input px--1" {...props} />;
   }
 
   return (
@@ -129,12 +170,54 @@ const Home = () => {
         show={SModal} onClick={()=>setSModal(false)}
         onHide={()=>setSModal(false)}>
           <div className='d-flex flex-column'>
-            <input type="text" onChange={(e)=>setSendEnvDate(e.target.value)} value={sendEnvDate}/>
-            <input type="text" onChange={(e)=>setSendEnvSubject(e.target.value)} value={sendEnvSubject}/>
-            <input type="text" onChange={(e)=>setSendEnvReceiver(e.target.value)} value={sendEnvReceiver}/>
-            <input type="text" onChange={(e)=>setSendEnvActor(e.target.value)} value={sendEnvActor}/>
-            <input type="text" onChange={(e)=>setSendEnvSendDate(e.target.value)} value={sendEnvSendDate}/>
-            <input type="text" onChange={(e)=>setSendEnvAtach(e.target.value)} value={sendEnvAtach}/>
+            <div className='d-flex justify-content-between w-350 mb-1'>
+              <DatePicker
+                inputComponent={DatePickerInput}
+                placeholder="انتخاب تاریخ"
+                format="jYYYY/jMM/jDD"
+                onChange={(unix, formatted)=>setSendEnvDate(formatted)}
+                id="datePicker"
+                preSelected={sendEnvDate}
+              />
+             <span>تاریخ</span>
+            </div>
+            <div className='d-flex justify-content-between w-350 mb-1'>
+              <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvSubject(e.target.value)} value={sendEnvSubject}/>
+              <span>موضوع نامه</span>
+            </div>
+            <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvReceiver(e.target.value)} value={sendEnvReceiver}/>
+              <span>گیرنده نامه</span>
+            </div>
+            <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setSendEnvActor(e.target.value)} value={sendEnvActor}/>
+              <span>اقدامگر</span>
+            </div>
+            <div className='d-flex justify-content-between w-350 mb-1'>
+              <DatePicker
+                inputComponent={DatePickerInput}
+                placeholder="انتخاب تاریخ"
+                format="jYYYY/jMM/jDD"
+                onChange={(unix, formatted)=>setSendEnvSendDate(formatted)}
+                id="datePicker"
+                preSelected={sendEnvSendDate}
+              />
+              <span>تاریخ ارسال</span>
+            </div>
+            <div className='d-flex justify-content-between w-350'>
+              <div className="btn d-flex">
+                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                       onChange={(e)=>setSendEnvFile(e.target.files[0].path)}/>
+              </div>
+              <span>فایل نامه</span>
+            </div>
+            <div className='d-flex justify-content-between w-350'>
+              <div className="btn d-flex">
+                <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                       onChange={(e)=>setSendEnvAtach(e.target.files[0].path)}/>
+              </div>
+              <span>فایل پیوست</span>
+            </div>
           </div>
       </MyModal>
 
@@ -146,20 +229,73 @@ const Home = () => {
         onSave={addReceivedEnvelope}
         show={REModal} onClick={()=>setREModal(false)}
         onHide={()=>setREModal(false)}>
-
+        <div className='d-flex flex-column'>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvNumber(e.target.value)} value={recEnvNumber}/>
+            <span>شماره نامه</span>
+          </div>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <DatePicker
+              inputComponent={DatePickerInput}
+              placeholder="انتخاب تاریخ"
+              format="jYYYY/jMM/jDD"
+              onChange={(unix, formatted)=>setRecEnvDate(formatted)}
+              id="datePicker"
+              preSelected={recEnvDate}
+            />
+            <span>تاریخ</span>
+          </div>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvSubject(e.target.value)} value={recEnvSubject}/>
+            <span>موضوع نامه</span>
+          </div>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvOwner(e.target.value)} value={recEnvOwner}/>
+            <span>صاحب نامه</span>
+          </div>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvActor(e.target.value)} value={recEnvActor}/>
+            <span>مرجع رسیدگی کننده</span>
+          </div>
+          <div className='d-flex justify-content-between w-350 mb-1'>
+            <DatePicker
+              inputComponent={DatePickerInput}
+              placeholder="انتخاب تاریخ"
+              format="jYYYY/jMM/jDD"
+              onChange={(unix, formatted)=>setRecEnvRecDate(formatted)}
+              id="datePicker"
+              preSelected={recEnvRecDate}
+            />
+            <span>تاریخ دریافت</span>
+          </div>
+          <div className='d-flex justify-content-between w-350'>
+            <div className="btn d-flex">
+              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                     onChange={(e)=>setRecEnvFile(e.target.files[0].path)}/>
+            </div>
+            <span>فایل نامه</span>
+          </div>
+          <div className='d-flex justify-content-between w-350'>
+            <div className="btn d-flex">
+              <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx,.docx"
+                     onChange={(e)=>setRecEnvAtach(e.target.files[0].path)}/>
+            </div>
+            <span>فایل پیوست</span>
+          </div>
+        </div>
       </MyModal>
 
-      {!!sendEnvelope.length && showSendEnvelope && (
+      {showSendEnvelope && (
         <div className='table-container'>
           <div className='send-envelope__title my-2'>لیست نامه های ارسالی</div>
-          <List itemsToTrack={sendEnvelope} />
+          <SendEnvList itemsToTrack={sendEnvelope} />
         </div>
       )}
-      {!sendEnvelope.length && !showReceivedEnvelope &&(
-        <div className='send-envelope__title my-2'>
-          <p dir='rtl'>لیست نامه های ارسالی خالی است!</p>
+      {showReceivedEnvelope &&(
+        <div className='table-container'>
+          <div className='send-envelope__title my-2'>لیست نامه های دریافتی</div>
+          <RecEnvList itemsToTrack={sendEnvelope}/>
         </div>
-
       )}
     </React.Fragment>
   )

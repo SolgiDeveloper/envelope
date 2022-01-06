@@ -17,8 +17,8 @@ const MyModal = ({show, modalTitle ,closeBtnTitle, saveBtnTitle, children, onHid
         {children}
       </Modal.Body>
       <Modal.Footer>
-        {closeBtnTitle && <Button variant="secondary" onClick={onClick}>{closeBtnTitle}</Button>}
         <Button variant={saveBtnColor} onClick={onSave}>{saveBtnTitle}</Button>
+        {closeBtnTitle && <Button variant="secondary" onClick={onClick}>{closeBtnTitle}</Button>}
       </Modal.Footer>
     </Modal>
   )

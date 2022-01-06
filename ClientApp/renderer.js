@@ -26,4 +26,8 @@ function removeDataFromStorage(item) {
   ipcRenderer.send(REMOVE_DATA_FROM_STORAGE, item)
 }
 
-module.exports = { loadSavedData, saveDataInStorage, removeDataFromStorage }
+function pdfFileToShow(path){
+  ipcRenderer.send('pdf-file:send', path)
+}
+
+module.exports = { loadSavedData, saveDataInStorage, removeDataFromStorage, pdfFileToShow }

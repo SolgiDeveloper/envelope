@@ -10,6 +10,7 @@ const storage = require("electron-json-storage")
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let showPdfWindow;
 
 // A reference to the sendEnvelope array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
 let sendEnvelope;
@@ -174,4 +175,15 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, id) => {
       })
     }
   })
+})
+
+ipcMain.on('pdf-file:send', (event, path)=>{
+  showPdfWindow = new BrowserWindow({
+    icon: __dirname + "/ClientApp/assets/icons/letter2.png",
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  })
+  showPdfWindow.loadURL(path)
 })

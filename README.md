@@ -1,5 +1,5 @@
-# Boilerplate-Electron-React-JSONStorage
-A boilerplate for building offline, persistent desktop apps in JavaScript using Electron, React, and local JSON storage.
+# Envelope manager
+
 
 The project uses [electron-json-storage](https://github.com/electron-userland/electron-json-storage) to persist basic data structures in JSON.
 

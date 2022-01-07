@@ -28,15 +28,18 @@ const Home = () => {
   const [recEnvAtach2, setRecEnvAtach2] = useState("");
   const [recEnvFile, setRecEnvFile] = useState("");
 
-
+  // all envelop items
   const [sendEnvelope, setSendEnvelope] = useState([]);
+  const [searchedEnvelopeState, setSearchedEnvelopeState] = useState([]);
 
   const [SModal, setSModal] = useState(false);
   const [REModal, setREModal] = useState(false);
 
   const [showReceivedEnvelope, setShowReceivedEnvelope] = useState(false);
   const [showSendEnvelope, setShowSendEnvelope] = useState(true);
+  const [showSearchedEnvelope, setShowSearchedEnvelope] = useState(false);
 
+  let searchedEnvelope = [];
   // Grab the user's saved sendEnvelope after the app loads
   useEffect(() => {
     loadSavedData();
@@ -65,7 +68,6 @@ const Home = () => {
 
   // Receives sendEnvelope from main and sets the state
   const handleReceiveData = (event, data) => {
-    console.log('data',data)
     setSendEnvelope([...data.message]);
   };
 
@@ -75,7 +77,7 @@ const Home = () => {
   }
 
 
-  // Send the input to main
+  // Send the SendEnvelope to main.js
   const addSendEnvelope = () => {
     let id
     if (sendEnvelope.length === 0){
@@ -87,7 +89,7 @@ const Home = () => {
     const data =[]
     data[0] = 'send'
     data[1] = id
-    data[2] = sendEnvNumber
+    data[2] = `${sendEnvNumber}`
     data[3] = sendEnvDate
     data[4] = sendEnvSubject
     data[5] = sendEnvReceiver
@@ -108,8 +110,9 @@ const Home = () => {
     setSModal(false)
     setShowSendEnvelope(true)
     setShowReceivedEnvelope(false)
+    setShowSearchedEnvelope(false)
   }
-
+  // Send the ReceivedEnvelope to main.js
   const addReceivedEnvelope = () => {
     let id
     if (sendEnvelope.length === 0){
@@ -121,7 +124,7 @@ const Home = () => {
     const data =[]
     data[0] = 'receive'
     data[1] = id
-    data[2] = receiveEnvNumber
+    data[2] = `${receiveEnvNumber}`
     data[3] = recEnvDate
     data[4] = recEnvSubject
     data[5] = recEnvOwner
@@ -144,18 +147,55 @@ const Home = () => {
     setREModal(false)
     setShowReceivedEnvelope(true)
     setShowSendEnvelope(false)
+    setShowSearchedEnvelope(false)
   }
   const showSendEnvelopeHandler = () => {
+    searchedEnvelope=[]
+    setShowSearchedEnvelope(false)
     setShowReceivedEnvelope(false)
     setShowSendEnvelope(true)
   }
   const showReceivedEnvelopeHandler = () => {
+    searchedEnvelope=[]
+    setShowSearchedEnvelope(false)
     setShowSendEnvelope(false)
     setShowReceivedEnvelope(true)
   }
 
   const DatePickerInput =(props) => {
     return <input className="date-picker__input px--1" {...props} />;
+  }
+
+  const searchBtnClickedHandler = (searchItem) => {
+    if(searchItem.length < 1){
+      searchedEnvelope=[]
+      setShowSearchedEnvelope(false)
+      setShowSendEnvelope(true)
+      setShowReceivedEnvelope(false)
+    }
+   if (!showSearchedEnvelope && searchItem.length >= 1){
+     if(showSendEnvelope){
+       sendEnvelope.map((item, i) => {
+         if(item[0] === 'send'){
+           if(item[4].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[2].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }}})
+     }else if(showReceivedEnvelope){
+       sendEnvelope.map((item, i) => {
+         if(item[0] === 'receive'){
+           if(item[4].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[2].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[9].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }}})
+     }
+     setSearchedEnvelopeState([...searchedEnvelope]);
+     setShowSearchedEnvelope(true)
+   }
   }
 
   return (
@@ -165,6 +205,7 @@ const Home = () => {
         makeReceivedEnvelope={()=>setREModal(true)}
         showSendEnvelope={showSendEnvelopeHandler}
         showReceivedEnvelope={showReceivedEnvelopeHandler}
+        searchBtnClicked={searchBtnClickedHandler}
       />
 
       <MyModal
@@ -306,16 +347,28 @@ const Home = () => {
         </div>
       </MyModal>
 
-      {showSendEnvelope && (
+      {(!showSearchedEnvelope && showSendEnvelope) && (
         <div className='table-container'>
           <div className='send-envelope__title my-2'>لیست نامه های ارسالی</div>
           <SendEnvList itemsToTrack={sendEnvelope} />
         </div>
       )}
-      {showReceivedEnvelope &&(
+      {(showSearchedEnvelope && showSendEnvelope) && (
+        <div className='table-container'>
+          <div className='send-envelope__title my-2'>جستجو در لیست نامه های ارسالی</div>
+          <SendEnvList itemsToTrack={searchedEnvelopeState} />
+        </div>
+      )}
+      {(!showSearchedEnvelope && showReceivedEnvelope) &&(
         <div className='table-container'>
           <div className='send-envelope__title my-2'>لیست نامه های دریافتی</div>
           <RecEnvList itemsToTrack={sendEnvelope}/>
+        </div>
+      )}
+      {(showSearchedEnvelope && showReceivedEnvelope) &&(
+        <div className='table-container'>
+          <div className='send-envelope__title my-2'>جستجو در لیست نامه های دریافتی</div>
+          <RecEnvList itemsToTrack={searchedEnvelopeState}/>
         </div>
       )}
     </React.Fragment>

@@ -1,17 +1,21 @@
 'use strict';
 
 // Import parts of electron to use
-const { app, ipcMain, BrowserWindow } = require('electron');
+const { app, ipcMain, BrowserWindow, Menu } = require('electron');
 const path = require('path')
 const url = require('url')
 const {HANDLE_FETCH_DATA, FETCH_DATA_FROM_STORAGE, HANDLE_SAVE_DATA, SAVE_DATA_IN_STORAGE, REMOVE_DATA_FROM_STORAGE, HANDLE_REMOVE_DATA} = require("./utils/constants")
 const storage = require("electron-json-storage")
 
+//set env
+// process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = 'production'
+const isDev = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let showPdfWindow;
-
+let aboutWindow;
 // A reference to the sendEnvelope array, full of JS/JSON objects. All mutations to the array are performed in the main.js app, but each mutation will trigger a rewrite to the user's storage for data persistence
 let sendEnvelope;
 
@@ -26,11 +30,11 @@ const defaultDataPath = storage.getDefaultDataPath();
 // On Mac: /Users/[username]/Library/Application Support/[app-name]/storage
 
 function createWindow() {
+  const mainMenu = Menu.buildFromTemplate(menu)
+  Menu.setApplicationMenu(mainMenu)
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    title: 'simorgh',
-    width: 1024,
-    height: 768,
+    title: 'Simorgh',
     show: false,
     webPreferences: {
 			nodeIntegration: true,
@@ -38,7 +42,8 @@ function createWindow() {
 		},
     icon: __dirname + "/ClientApp/assets/icons/letter2.png"
   });
-
+  mainWindow.on('closed', ()=> app.quit())
+  mainWindow.maximize();
   // and load the index.html of the app.
   let indexPath;
   if ( dev && process.argv.indexOf('--noDevServer') === -1 ) {
@@ -186,4 +191,38 @@ ipcMain.on('pdf-file:send', (event, path)=>{
     }
   })
   showPdfWindow.loadURL(path)
+  showPdfWindow.setMenu(null)
 })
+function createAboutWindow() {
+  aboutWindow = new BrowserWindow({
+    title: 'About Simorgh office',
+    width: 300,
+    height: 300,
+    resizable: false,
+    icon: __dirname + "/ClientApp/assets/icons/letter2.png",
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  })
+  aboutWindow.loadFile('./about.html')
+  aboutWindow.on('closed', ()=> aboutWindow = null)
+  aboutWindow.setMenu(null)
+}
+const menu = [
+  {
+        label: 'About',
+        click:() => createAboutWindow()
+  },
+  ...(isDev ? [
+    {
+      label: 'Developer',
+      submenu: [
+        {role: 'reload'},
+        {role: 'forcereload'},
+        {type: 'separator'},
+        {role: 'toggledevtools'},
+      ]
+    }
+  ] : [])
+]

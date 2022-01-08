@@ -8,8 +8,8 @@ const {HANDLE_FETCH_DATA, FETCH_DATA_FROM_STORAGE, HANDLE_SAVE_DATA, SAVE_DATA_I
 const storage = require("electron-json-storage")
 
 //set env
-// process.env.NODE_ENV = 'development'
-process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = 'development'
+// process.env.NODE_ENV = 'production'
 const isDev = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -138,7 +138,7 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
 ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
   console.log("Main received: SAVE_DATA_IN_STORAGE")
   // update the sendEnvelope array.
-  sendEnvelope.push(message)
+  sendEnvelope.unshift(message)
   // Save sendEnvelope to storage
   storage.set("sendEnvelope", sendEnvelope, (error) => {
     if (error) {

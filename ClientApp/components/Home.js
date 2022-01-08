@@ -83,7 +83,7 @@ const Home = () => {
     if (sendEnvelope.length === 0){
      id = sendEnvelope.length
     }else{
-     id = sendEnvelope[sendEnvelope.length -1][1] + 1
+     id = sendEnvelope[0][1] + 1
     }
     const sendEnvNumber = 1000 + id
     const data =[]
@@ -111,6 +111,7 @@ const Home = () => {
     setShowSendEnvelope(true)
     setShowReceivedEnvelope(false)
     setShowSearchedEnvelope(false)
+    loadSavedData()
   }
   // Send the ReceivedEnvelope to main.js
   const addReceivedEnvelope = () => {
@@ -118,7 +119,7 @@ const Home = () => {
     if (sendEnvelope.length === 0){
       id = sendEnvelope.length
     }else{
-      id = sendEnvelope[sendEnvelope.length -1][1] + 1
+      id = sendEnvelope[0][1] + 1
     }
     const receiveEnvNumber = 1000 + id
     const data =[]
@@ -148,6 +149,7 @@ const Home = () => {
     setShowReceivedEnvelope(true)
     setShowSendEnvelope(false)
     setShowSearchedEnvelope(false)
+    loadSavedData()
   }
   const showSendEnvelopeHandler = () => {
     searchedEnvelope=[]

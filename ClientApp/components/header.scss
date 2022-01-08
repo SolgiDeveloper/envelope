@@ -11,6 +11,16 @@
   padding: 2px 8px !important;
   text-align: right !important;
 }
+.dropdown-item:nth-of-type(2n){
+  background:#0062cc8c;
+}
+.dropdown-item:last-of-type{
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.dropdown-item:hover{
+  background:#babdc1 !important;
+}
 
  .dropdown-toggle::after {
   margin-left: 0.255em !important;

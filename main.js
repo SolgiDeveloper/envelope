@@ -197,7 +197,7 @@ function createAboutWindow() {
   aboutWindow = new BrowserWindow({
     title: 'About Simorgh office',
     width: 300,
-    height: 300,
+    height: 350,
     resizable: false,
     icon: __dirname + "/ClientApp/assets/icons/letter2.png",
     webPreferences: {

@@ -183,6 +183,10 @@ const Home = () => {
              searchedEnvelope=[...searchedEnvelope, item]
            }else if(item[2].search(searchItem) !== -1){
              searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[5].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[6].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
            }}})
      }else if(showReceivedEnvelope){
        sendEnvelope.map((item, i) => {
@@ -192,6 +196,10 @@ const Home = () => {
            }else if(item[2].search(searchItem) !== -1){
              searchedEnvelope=[...searchedEnvelope, item]
            }else if(item[9].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[5].search(searchItem) !== -1){
+             searchedEnvelope=[...searchedEnvelope, item]
+           }else if(item[6].search(searchItem) !== -1){
              searchedEnvelope=[...searchedEnvelope, item]
            }}})
      }

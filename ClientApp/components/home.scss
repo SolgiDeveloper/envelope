@@ -1,3 +1,20 @@
+.expiry-layout{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  background: #808080;
+  z-index: 1000;
+}
+.expiry-container{
+  width:300px;
+  height: 150px;
+  background: white;
+  border-radius: 10px;
+  padding:20px 15px;
+}
+.expiry-container p{
+  text-align: justify;
+}
 .table-container{
   max-height: 88vh;
   overflow-y: scroll;

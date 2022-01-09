@@ -34,19 +34,31 @@ const Home = () => {
 
   const [SModal, setSModal] = useState(false);
   const [REModal, setREModal] = useState(false);
+  const [expiry, setExpiry] = useState(false);
 
   const [showReceivedEnvelope, setShowReceivedEnvelope] = useState(false);
   const [showSendEnvelope, setShowSendEnvelope] = useState(true);
   const [showSearchedEnvelope, setShowSearchedEnvelope] = useState(false);
 
   let searchedEnvelope = [];
+  const realDate =  Date.now();
+  const localExpiry = localStorage.getItem('localExpiry');
+  const expiryDate = 1695414600000
   // Grab the user's saved sendEnvelope after the app loads
   useEffect(() => {
     loadSavedData();
+    checkExpiry();
   }, []);
 
+  const checkExpiry = () => {
+    if(realDate > expiryDate){
+      setExpiry(true)
+      localStorage.setItem('localExpiry', 'true');
+    }
+  }
   // Listener functions that receive messages from main
   useEffect(() => {
+    checkExpiry();
     ipcRenderer.on(HANDLE_SAVE_DATA, handleNewItem);
     // If we omit the next step, we will cause a memory leak and & exceed max listeners
     return () => {
@@ -54,12 +66,14 @@ const Home = () => {
     }
   });
   useEffect(() => {
+    checkExpiry();
     ipcRenderer.on(HANDLE_FETCH_DATA, handleReceiveData);
     return () => {
       ipcRenderer.removeListener(HANDLE_FETCH_DATA, handleReceiveData);
     }
   });
   useEffect(() => {
+    checkExpiry();
     ipcRenderer.on(HANDLE_REMOVE_DATA, handleReceiveData);
     return () => {
       ipcRenderer.removeListener(HANDLE_REMOVE_DATA, handleReceiveData);
@@ -210,6 +224,15 @@ const Home = () => {
 
   return (
     <React.Fragment>
+      { (expiry || localExpiry) && <div className='expiry-layout d-flex flex-column justify-content-center align-items-start'>
+        <div className='m-auto'>
+          <div className="expiry-container d-flex flex-column align-items-start">
+            <p dir='rtl'>اعتبار لایسنس نرم افزار به پایان رسیده است. لطفا برای تهیه لایسنس با برنامه نویس تماس حاصل فرمایید.</p>
+            <p>09337985568</p>
+          </div>
+        </div>
+      </div>}
+
       <Header
         makeSendEnvelope={()=>setSModal(true)}
         makeReceivedEnvelope={()=>setREModal(true)}

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {loadSavedData, saveDataInStorage} from "../renderer.js";
+import {loadSavedData, removeDataFromStorage, saveDataInStorage} from "../renderer.js";
 import SendEnvList from "./SendEnvList";
 import Header from "./Header";
 const { ipcRenderer } = require("electron");
@@ -17,6 +17,8 @@ const Home = () => {
   const [sendEnvAtach, setSendEnvAtach] = useState("");
   const [sendEnvAtach2, setSendEnvAtach2] = useState("");
   const [sendEnvFile, setSendEnvFile] = useState("");
+  const [editingSendEnv, setEditingSendEnv] = useState(false)
+  const [editingSendEnvId, setEditingSendEnvId] = useState(0)
 
   const [recEnvNumber, setRecEnvNumber] = useState("");
   const [recEnvDate, setRecEnvDate] = useState("");
@@ -27,6 +29,8 @@ const Home = () => {
   const [recEnvAtach, setRecEnvAtach] = useState("");
   const [recEnvAtach2, setRecEnvAtach2] = useState("");
   const [recEnvFile, setRecEnvFile] = useState("");
+  const [editingResEnv, setEditingResEnv] = useState(false)
+  const [editingResEnvId, setEditingResEnvId] = useState(0)
 
   // all envelop items
   const [sendEnvelope, setSendEnvelope] = useState([]);
@@ -94,10 +98,18 @@ const Home = () => {
   // Send the SendEnvelope to main.js
   const addSendEnvelope = () => {
     let id
-    if (sendEnvelope.length === 0){
-     id = sendEnvelope.length
-    }else{
-     id = sendEnvelope[0][1] + 1
+    if(editingSendEnv){
+      removeDataFromStorage(editingSendEnvId);
+      loadSavedData();
+      id = editingSendEnvId;
+    }else {
+      if (sendEnvelope.length === 0){
+        id = sendEnvelope.length
+        localStorage.setItem('envId', id)
+      }else{
+        id = Number(localStorage.getItem('envId')) + 1
+        localStorage.setItem('envId', id)
+      }
     }
     const sendEnvNumber = 1000 + id
     const data =[]
@@ -112,6 +124,7 @@ const Home = () => {
     data[8] = sendEnvAtach
     data[9] = sendEnvFile
     data[10] = sendEnvAtach2
+    data[11] = ["admin"]
     saveDataInStorage(data)
     setSendEnvDate("")
     setSendEnvSubject("")
@@ -125,16 +138,24 @@ const Home = () => {
     setShowSendEnvelope(true)
     setShowReceivedEnvelope(false)
     setShowSearchedEnvelope(false)
-    loadSavedData()
+    setEditingSendEnv(false);
+    if(!editingSendEnv) loadSavedData();
   }
   // Send the ReceivedEnvelope to main.js
   const addReceivedEnvelope = () => {
     let id
-    if (sendEnvelope.length === 0){
-      id = sendEnvelope.length
-    }else{
-      id = sendEnvelope[0][1] + 1
-    }
+    if(editingResEnvId){
+      removeDataFromStorage(editingResEnvId);
+      loadSavedData();
+      id = editingResEnvId;
+    }else {
+      if (sendEnvelope.length === 0){
+        id = sendEnvelope.length
+        localStorage.setItem('envId', id)
+      }else{
+        id = Number(localStorage.getItem('envId')) + 1
+        localStorage.setItem('envId', id)
+    }}
     const receiveEnvNumber = 1000 + id
     const data =[]
     data[0] = 'receive'
@@ -149,6 +170,7 @@ const Home = () => {
     data[9] = recEnvNumber
     data[10] = recEnvFile
     data[11] = recEnvAtach2
+    data[12] = ["admin"]
     saveDataInStorage(data)
     setRecEnvDate("")
     setRecEnvSubject("")
@@ -163,7 +185,7 @@ const Home = () => {
     setShowReceivedEnvelope(true)
     setShowSendEnvelope(false)
     setShowSearchedEnvelope(false)
-    loadSavedData()
+    loadSavedData();
   }
   const showSendEnvelopeHandler = () => {
     searchedEnvelope=[]
@@ -221,7 +243,52 @@ const Home = () => {
      setShowSearchedEnvelope(true)
    }
   }
-
+  const sendEnvToEdit = (item) => {
+    setEditingSendEnv(true)
+    setSendEnvDate(item[3])
+    setSendEnvSendDate(item[7])
+    setSendEnvSubject(item[4])
+    setSendEnvReceiver(item[5])
+    setSendEnvActor(item[6])
+    setEditingSendEnvId(item[1])
+    setSModal(true)
+  }
+  const closeSModal = () => {
+    setSModal(false)
+    setEditingSendEnv(false)
+    setSendEnvDate("")
+    setSendEnvSubject("")
+    setSendEnvReceiver("")
+    setSendEnvActor("")
+    setSendEnvSendDate("")
+    setSendEnvAtach("")
+    setSendEnvAtach2("")
+    setSendEnvFile("")
+  }
+  const resEnvToEdit = (item) => {
+    setEditingResEnv(true)
+    setEditingResEnvId(item[1])
+    setRecEnvDate(item[3])
+    setRecEnvSubject(item[4])
+    setRecEnvOwner(item[5])
+    setRecEnvActor(item[6])
+    setRecEnvRecDate(item[7])
+    setRecEnvNumber(item[9])
+    setREModal(true)
+  }
+  const closeREModal = () => {
+    setREModal(false)
+    setEditingResEnv(false)
+    setRecEnvDate("")
+    setRecEnvSubject("")
+    setRecEnvOwner("")
+    setRecEnvActor("")
+    setRecEnvRecDate("")
+    setRecEnvAtach("")
+    setRecEnvAtach2("")
+    setRecEnvNumber("")
+    setRecEnvFile("")
+  }
   return (
     <React.Fragment>
       { (expiry || localExpiry) && <div className='expiry-layout d-flex flex-column justify-content-center align-items-start'>
@@ -242,13 +309,13 @@ const Home = () => {
       />
 
       <MyModal
-        modalTitle='ایجاد نامه ارسالی'
+        modalTitle={editingSendEnv ? 'ویرایش نامه ارسالی' :'ایجاد نامه ارسالی'}
         saveBtnTitle='ذخیره'
         closeBtnTitle='بستن'
         saveBtnColor='success'
         onSave={addSendEnvelope}
-        show={SModal} onClick={()=>setSModal(false)}
-        onHide={()=>setSModal(false)}>
+        show={SModal} onClick={closeSModal}
+        onHide={closeSModal}>
           <div className='d-flex flex-column'>
             <div className='d-flex justify-content-between w-390 mb-1'>
               <DatePicker
@@ -284,6 +351,7 @@ const Home = () => {
               />
               <span>تاریخ ارسال</span>
             </div>
+            {editingSendEnv && <div className='error-in-editing'>فایل نامه و پیوست ها را مجدد وارد کنید!</div>}
             <div className='d-flex justify-content-between w-390'>
               <div className="btn d-flex">
                 <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
@@ -309,13 +377,13 @@ const Home = () => {
       </MyModal>
 
       <MyModal
-        modalTitle='ایجاد نامه دریافتی'
+        modalTitle={editingResEnv ? 'ویرایش نامه دریافتی' :'ایجاد نامه دریافتی'}
         saveBtnTitle='ذخیره'
         closeBtnTitle='بستن'
         saveBtnColor='success'
         onSave={addReceivedEnvelope}
-        show={REModal} onClick={()=>setREModal(false)}
-        onHide={()=>setREModal(false)}>
+        show={REModal} onClick={closeREModal}
+        onHide={closeREModal}>
         <div className='d-flex flex-column'>
           <div className='d-flex justify-content-between w-390 mb-1'>
             <input className='px--1' dir='rtl' type="text" onChange={(e)=>setRecEnvNumber(e.target.value)} value={recEnvNumber}/>
@@ -355,6 +423,7 @@ const Home = () => {
             />
             <span>تاریخ دریافت</span>
           </div>
+          {editingResEnv && <div className='error-in-editing'>فایل نامه و پیوست ها را مجدد وارد کنید!</div>}
           <div className='d-flex justify-content-between w-390'>
             <div className="btn d-flex">
               <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
@@ -381,27 +450,35 @@ const Home = () => {
       </MyModal>
 
       {(!showSearchedEnvelope && showSendEnvelope) && (
-        <div className='table-container'>
+        <div>
           <div className='send-envelope__title my-2'>لیست نامه های ارسالی</div>
-          <SendEnvList itemsToTrack={sendEnvelope} />
+          <div className='table-container'>
+            <SendEnvList itemsToTrack={sendEnvelope} sendEnvToEdit={sendEnvToEdit} />
+          </div>
         </div>
       )}
       {(showSearchedEnvelope && showSendEnvelope) && (
-        <div className='table-container'>
+        <div>
           <div className='send-envelope__title my-2'>جستجو در لیست نامه های ارسالی</div>
-          <SendEnvList itemsToTrack={searchedEnvelopeState} />
+          <div className='table-container'>
+            <SendEnvList itemsToTrack={searchedEnvelopeState} sendEnvToEdit={sendEnvToEdit}/>
+          </div>
         </div>
       )}
       {(!showSearchedEnvelope && showReceivedEnvelope) &&(
-        <div className='table-container'>
+        <div>
           <div className='send-envelope__title my-2'>لیست نامه های دریافتی</div>
-          <RecEnvList itemsToTrack={sendEnvelope}/>
+          <div className='table-container'>
+            <RecEnvList itemsToTrack={sendEnvelope} resEnvToEdit={resEnvToEdit}/>
+          </div>
         </div>
       )}
       {(showSearchedEnvelope && showReceivedEnvelope) &&(
-        <div className='table-container'>
+        <div>
           <div className='send-envelope__title my-2'>جستجو در لیست نامه های دریافتی</div>
-          <RecEnvList itemsToTrack={searchedEnvelopeState}/>
+          <div className='table-container'>
+            <RecEnvList itemsToTrack={searchedEnvelopeState} resEnvToEdit={resEnvToEdit}/>
+          </div>
         </div>
       )}
     </React.Fragment>

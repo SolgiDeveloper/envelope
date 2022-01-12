@@ -1,8 +1,17 @@
+.JDatePicker{
+  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.error-in-editing{
+  direction: rtl;
+  text-align:right;
+  color: red;
+}
 .expiry-layout{
   width:100vw;
   height:100vh;
   position:fixed;
-  background: #808080;
+  background: #808080cc;
   z-index: 1000;
 }
 .expiry-container{
@@ -16,8 +25,12 @@
   text-align: justify;
 }
 .table-container{
-  max-height: 88vh;
-  overflow-y: scroll;
+  position: fixed;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 92px;
 }
 
 .send-envelope__title{

@@ -5,8 +5,8 @@ import {pdfFileToShow, removeDataFromStorage} from "../renderer.js"
 import './list.scss'
 import MyModal from "./MyModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEnvelope, faPaperclip, faTrash} from "@fortawesome/fontawesome-free-solid";
-const SendEnvList = ({itemsToTrack}) => {
+import {faEnvelope, faPaperclip, faPencilAlt, faTrash} from "@fortawesome/fontawesome-free-solid";
+const SendEnvList = ({itemsToTrack, resEnvToEdit}) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemId, setItemId] = useState(0);
 
@@ -20,6 +20,9 @@ const SendEnvList = ({itemsToTrack}) => {
   }
   const callToOpenFile = (path) => {
     pdfFileToShow(path)
+  }
+  const callEditResModal = (item) => {
+    resEnvToEdit(item)
   }
   return (
     <React.Fragment>
@@ -60,6 +63,13 @@ const SendEnvList = ({itemsToTrack}) => {
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>
+                  <Button
+                    className='ml-1'
+                    variant="outline-success"
+                    onClick={() => callEditResModal(item)}
+                  >
+                    <FontAwesomeIcon icon={faPencilAlt}/>
+                  </Button>
                 </td>
                 <td>
                   {item[8].length !== 0 ? (
@@ -67,7 +77,7 @@ const SendEnvList = ({itemsToTrack}) => {
                       variant="outline-success"
                       onClick={() => callToOpenFile(item[8])}>
                       <FontAwesomeIcon icon={faPaperclip}/> 1
-                    </Button>) : "ندارد"}
+                    </Button>) : item[11].length === 0 ? "ندارد":""}
                   {item[11].length !== 0 ? (
                     <Button
                       variant="outline-success"

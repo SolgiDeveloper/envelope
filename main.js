@@ -189,7 +189,7 @@ ipcMain.on('pdf-file:send', (event, path)=>{
       contextIsolation: false
     }
   })
-  showPdfWindow.loadURL(path)
+  showPdfWindow.loadFile(path)
   showPdfWindow.setMenu(null)
 })
 function createAboutWindow() {

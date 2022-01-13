@@ -106,9 +106,6 @@ const Home = () => {
       if (sendEnvelope.length === 0){
         id = sendEnvelope.length
         localStorage.setItem('envId', id )
-      }else if(sendEnvelope.length > 0){
-        id = sendEnvelope.length + 100
-        localStorage.setItem('envId', id )
       }else{
         id = Number(localStorage.getItem('envId')) + 1
         localStorage.setItem('envId', id)
@@ -158,9 +155,6 @@ const Home = () => {
       if (sendEnvelope.length === 0){
         id = sendEnvelope.length
         localStorage.setItem('envId', id)
-      }else if(sendEnvelope.length > 0){
-        id = sendEnvelope.length + 100
-        localStorage.setItem('envId', id )
       }else{
         id = Number(localStorage.getItem('envId')) + 1
         localStorage.setItem('envId', id)
@@ -219,6 +213,9 @@ const Home = () => {
   }
 
   const searchBtnClickedHandler = (searchItem) => {
+    if(!localStorage.getItem('envId')){
+      return localStorage.setItem('envId', `${searchItem}`)
+    }
     if(searchItem.length < 1){
       searchedEnvelope=[]
       setShowSearchedEnvelope(false)

@@ -67,7 +67,7 @@ const SendEnvList = ({itemsToTrack, resEnvToEdit}) => {
                   </Button>
                   <Button
                     className='ml-1'
-                    variant="outline-success"
+                    variant="outline-info"
                     onClick={() => callEditResModal(item)}
                   >
                     <FontAwesomeIcon icon={faPencilAlt}/>

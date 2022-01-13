@@ -8,6 +8,8 @@ import './home.scss'
 import MyModal from "./MyModal";
 import {DatePicker} from "react-advance-jalaali-datepicker";
 import RecEnvList from "./RecEnvList";
+import { ToastContainer, toast } from 'react-toastify';
+import './ReactToastify.css';
 const Home = () => {
   const [sendEnvDate, setSendEnvDate] = useState("");
   const [sendEnvSubject, setSendEnvSubject] = useState("");
@@ -142,6 +144,8 @@ const Home = () => {
       setShowSearchedEnvelope(false)
       loadSavedData();
       setEditingSendEnv(false);
+      editingSendEnv && toast.info('نامه با موفقیت ویرایش شد.', {theme: 'colored'});
+      !editingSendEnv && toast.success('نامه با موفقیت افزوده شد.', {theme: 'colored'});
     },200)
   }
   // Send the ReceivedEnvelope to main.js
@@ -193,6 +197,8 @@ const Home = () => {
       setShowSearchedEnvelope(false)
       loadSavedData();
       setEditingResEnv(false)
+      editingResEnv && toast.info('نامه با موفقیت ویرایش شد.', {theme: 'colored'});
+      !editingResEnv && toast.success('نامه با موفقیت افزوده شد.', {theme: 'colored'});
     },200)
   }
   const showSendEnvelopeHandler = () => {
@@ -307,7 +313,16 @@ const Home = () => {
           </div>
         </div>
       </div>}
-
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover/>
       <Header
         makeSendEnvelope={()=>setSModal(true)}
         makeReceivedEnvelope={()=>setREModal(true)}

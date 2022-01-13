@@ -6,6 +6,7 @@ import './list.scss'
 import MyModal from "./MyModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faPaperclip, faPencilAlt, faTrash} from "@fortawesome/fontawesome-free-solid";
+import {toast} from "react-toastify";
 const SendEnvList = ({itemsToTrack, resEnvToEdit}) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemId, setItemId] = useState(0);
@@ -13,6 +14,7 @@ const SendEnvList = ({itemsToTrack, resEnvToEdit}) => {
   const deleteItemHandler = (item) => {
     removeDataFromStorage(item)
     setShowDeleteModal(false)
+    toast.error('نامه با موفقیت حذف شد.', {theme: 'colored'});
   }
   const callModal = (id) => {
     setShowDeleteModal(true)

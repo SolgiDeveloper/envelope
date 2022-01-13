@@ -53,7 +53,6 @@ const Home = () => {
     loadSavedData();
     checkExpiry();
   }, []);
-
   const checkExpiry = () => {
     if(realDate > expiryDate){
       setExpiry(true)
@@ -104,7 +103,10 @@ const Home = () => {
     }else {
       if (sendEnvelope.length === 0){
         id = sendEnvelope.length
-        localStorage.setItem('envId', id)
+        localStorage.setItem('envId', id )
+      }else if(sendEnvelope.length > 0){
+        id = sendEnvelope.length + 100
+        localStorage.setItem('envId', id )
       }else{
         id = Number(localStorage.getItem('envId')) + 1
         localStorage.setItem('envId', id)
@@ -152,6 +154,9 @@ const Home = () => {
       if (sendEnvelope.length === 0){
         id = sendEnvelope.length
         localStorage.setItem('envId', id)
+      }else if(sendEnvelope.length > 0){
+        id = sendEnvelope.length + 100
+        localStorage.setItem('envId', id )
       }else{
         id = Number(localStorage.getItem('envId')) + 1
         localStorage.setItem('envId', id)

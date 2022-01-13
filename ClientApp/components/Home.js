@@ -100,7 +100,6 @@ const Home = () => {
     let id
     if(editingSendEnv){
       removeDataFromStorage(editingSendEnvId);
-      loadSavedData();
       id = editingSendEnvId;
     }else {
       if (sendEnvelope.length === 0){
@@ -125,28 +124,29 @@ const Home = () => {
     data[9] = sendEnvFile
     data[10] = sendEnvAtach2
     data[11] = ["admin"]
-    saveDataInStorage(data)
-    setSendEnvDate("")
-    setSendEnvSubject("")
-    setSendEnvReceiver("")
-    setSendEnvActor("")
-    setSendEnvSendDate("")
-    setSendEnvAtach("")
-    setSendEnvAtach2("")
-    setSendEnvFile("")
-    setSModal(false)
-    setShowSendEnvelope(true)
-    setShowReceivedEnvelope(false)
-    setShowSearchedEnvelope(false)
-    setEditingSendEnv(false);
-    if(!editingSendEnv) loadSavedData();
+    setTimeout(()=>{
+      saveDataInStorage(data)
+      setSendEnvDate("")
+      setSendEnvSubject("")
+      setSendEnvReceiver("")
+      setSendEnvActor("")
+      setSendEnvSendDate("")
+      setSendEnvAtach("")
+      setSendEnvAtach2("")
+      setSendEnvFile("")
+      setSModal(false)
+      setShowSendEnvelope(true)
+      setShowReceivedEnvelope(false)
+      setShowSearchedEnvelope(false)
+      loadSavedData();
+      setEditingSendEnv(false);
+    },200)
   }
   // Send the ReceivedEnvelope to main.js
   const addReceivedEnvelope = () => {
     let id
-    if(editingResEnvId){
+    if(editingResEnv){
       removeDataFromStorage(editingResEnvId);
-      loadSavedData();
       id = editingResEnvId;
     }else {
       if (sendEnvelope.length === 0){
@@ -171,21 +171,24 @@ const Home = () => {
     data[10] = recEnvFile
     data[11] = recEnvAtach2
     data[12] = ["admin"]
-    saveDataInStorage(data)
-    setRecEnvDate("")
-    setRecEnvSubject("")
-    setRecEnvOwner("")
-    setRecEnvActor("")
-    setRecEnvRecDate("")
-    setRecEnvAtach("")
-    setRecEnvAtach2("")
-    setRecEnvNumber("")
-    setRecEnvFile("")
-    setREModal(false)
-    setShowReceivedEnvelope(true)
-    setShowSendEnvelope(false)
-    setShowSearchedEnvelope(false)
-    loadSavedData();
+    setTimeout(()=>{
+      saveDataInStorage(data)
+      setRecEnvDate("")
+      setRecEnvSubject("")
+      setRecEnvOwner("")
+      setRecEnvActor("")
+      setRecEnvRecDate("")
+      setRecEnvAtach("")
+      setRecEnvAtach2("")
+      setRecEnvNumber("")
+      setRecEnvFile("")
+      setREModal(false)
+      setShowReceivedEnvelope(true)
+      setShowSendEnvelope(false)
+      setShowSearchedEnvelope(false)
+      loadSavedData();
+      setEditingResEnv(false)
+    },200)
   }
   const showSendEnvelopeHandler = () => {
     searchedEnvelope=[]

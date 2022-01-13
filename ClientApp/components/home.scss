@@ -2,6 +2,16 @@
   border: 1px solid black;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+.days-titles{
+  display: flex;
+  flex-direction: row-reverse;
+}
+.JDatePicker .JC-months .prev, .JDatePicker .JC-months .next{
+  transform: none !important;
+}
+.holder{
+  margin-right:21px;
+}
 .error-in-editing{
   direction: rtl;
   text-align:right;

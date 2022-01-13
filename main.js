@@ -159,9 +159,8 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
 
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
 ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, id) => {
-  console.log('Main Received: REMOVE_DATA_FROM_STORAGE55555555')
+  console.log('Main Received: REMOVE_DATA_FROM_STORAGE')
   // Update the items to Track array.
-  console.log('id',id)
   sendEnvelope = sendEnvelope.filter(item => item[1] !== id)
   // sendEnvelope =[]
   // Save receivedEnvelope to storage
@@ -214,6 +213,7 @@ const menu = [
         label: 'About',
         click:() => createAboutWindow()
   },
+  {role: 'forcereload'},
   ...(isDev ? [
     {
       label: 'Developer',

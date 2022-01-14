@@ -373,21 +373,21 @@ const Home = () => {
             </div>
             {editingSendEnv && <div className='error-in-editing'>فایل نامه و پیوست ها را مجدد وارد کنید!</div>}
             <div className='d-flex justify-content-between w-390'>
-              <div className="btn d-flex">
+              <div className="btn input-file__holder d-flex">
                 <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                        onChange={(e)=>setSendEnvFile(e.target.files[0].path)}/>
               </div>
               <span>فایل نامه</span>
             </div>
             <div className='d-flex justify-content-between w-390'>
-              <div className="btn d-flex">
+              <div className="btn input-file__holder d-flex">
                 <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                        onChange={(e)=>setSendEnvAtach(e.target.files[0].path)}/>
               </div>
               <span>فایل پیوست 1</span>
             </div>
             <div className='d-flex justify-content-between w-390'>
-              <div className="btn d-flex">
+              <div className="btn input-file__holder d-flex">
                 <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                        onChange={(e)=>setSendEnvAtach2(e.target.files[0].path)}/>
               </div>
@@ -445,21 +445,21 @@ const Home = () => {
           </div>
           {editingResEnv && <div className='error-in-editing'>فایل نامه و پیوست ها را مجدد وارد کنید!</div>}
           <div className='d-flex justify-content-between w-390'>
-            <div className="btn d-flex">
+            <div className="btn input-file__holder d-flex">
               <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                      onChange={(e)=>setRecEnvFile(e.target.files[0].path)}/>
             </div>
             <span>فایل نامه</span>
           </div>
           <div className='d-flex justify-content-between w-390'>
-            <div className="btn d-flex">
+            <div className="btn input-file__holder d-flex">
               <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                      onChange={(e)=>setRecEnvAtach(e.target.files[0].path)}/>
             </div>
             <span>فایل پیوست 1</span>
           </div>
           <div className='d-flex justify-content-between w-390'>
-            <div className="btn d-flex">
+            <div className="btn input-file__holder d-flex">
               <input type="file" id="send-env-atach"  accept="image/jpeg,image/png,application/pdf,.xlsx"
                      onChange={(e)=>setRecEnvAtach2(e.target.files[0].path)}/>
             </div>

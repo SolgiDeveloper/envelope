@@ -9,8 +9,9 @@ const storage = require("electron-json-storage")
 
 //set env
 // process.env.NODE_ENV = 'development'
-process.env.NODE_ENV = 'production'
-const isDev = process.env.NODE_ENV !== 'production'
+// process.env.NODE_ENV = 'production'
+// const isDev = process.env.NODE_ENV !== 'production'
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -196,7 +197,7 @@ function createAboutWindow() {
   aboutWindow = new BrowserWindow({
     title: 'About Simorgh office',
     width: 300,
-    height: 350,
+    height: 327,
     resizable: false,
     icon: __dirname + "/ClientApp/assets/icons/letter2.png",
     webPreferences: {
@@ -210,11 +211,15 @@ function createAboutWindow() {
 }
 const menu = [
   {
-        label: 'About',
-        click:() => createAboutWindow()
+        label: 'simorgh',
+        submenu: [
+          {label: 'About',
+            click:() => createAboutWindow()
+          },
+          {role: 'reload'},
+        ]
   },
-  {role: 'forcereload'},
-  ...(isDev ? [
+  ...(dev ? [
     {
       label: 'Developer',
       submenu: [

@@ -1,7 +1,7 @@
 {
   "name": "simorgh",
   "productName": "simorgh",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simorgh another Project using Electron.js D3 and React Hooks",
   "author": "Mohammad Solgi",
   "license": "MIT",

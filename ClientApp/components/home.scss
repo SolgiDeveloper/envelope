@@ -12,6 +12,20 @@
 .holder{
   margin-right:21px;
 }
+::-webkit-file-upload-button {
+  color: #14aabe;
+  background-color: #ffffff;
+  border: 1px dashed #17a2b8;
+  border-radius: 3px;
+}
+::-webkit-file-upload-button:hover {
+  color: #fff;
+  background-color: #17a2b8;
+  border: 1px solid #0c7280;
+}
+.input-file__holder{
+  padding: 1px 0 !important;
+}
 .error-in-editing{
   direction: rtl;
   text-align:right;

@@ -1,6 +1,60 @@
+.JDatePicker{
+  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.days-titles{
+  display: flex;
+  flex-direction: row-reverse;
+}
+.JDatePicker .JC-months .prev, .JDatePicker .JC-months .next{
+  transform: none !important;
+}
+.holder{
+  margin-right:21px;
+}
+::-webkit-file-upload-button {
+  color: #14aabe;
+  background-color: #ffffff;
+  border: 1px dashed #17a2b8;
+  border-radius: 3px;
+}
+::-webkit-file-upload-button:hover {
+  color: #fff;
+  background-color: #17a2b8;
+  border: 1px solid #0c7280;
+}
+.input-file__holder{
+  padding: 1px 0 !important;
+}
+.error-in-editing{
+  direction: rtl;
+  text-align:right;
+  color: red;
+}
+.expiry-layout{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  background: rgb(0, 0, 0);
+  z-index: 1000;
+}
+.expiry-container{
+  width:300px;
+  height: 150px;
+  background: white;
+  border-radius: 10px;
+  padding:20px 15px;
+}
+.expiry-container p{
+  text-align: justify;
+}
 .table-container{
-  max-height: 88vh;
-  overflow-y: scroll;
+  position: fixed;
+  overflow-y: auto;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 92px;
 }
 
 .send-envelope__title{

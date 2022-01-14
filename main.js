@@ -8,9 +8,10 @@ const {HANDLE_FETCH_DATA, FETCH_DATA_FROM_STORAGE, HANDLE_SAVE_DATA, SAVE_DATA_I
 const storage = require("electron-json-storage")
 
 //set env
-process.env.NODE_ENV = 'development'
+// process.env.NODE_ENV = 'development'
 // process.env.NODE_ENV = 'production'
-const isDev = process.env.NODE_ENV !== 'production'
+// const isDev = process.env.NODE_ENV !== 'production'
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -159,9 +160,8 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
 
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
 ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, id) => {
-  console.log('Main Received: REMOVE_DATA_FROM_STORAGE55555555')
+  console.log('Main Received: REMOVE_DATA_FROM_STORAGE')
   // Update the items to Track array.
-  console.log('id',id)
   sendEnvelope = sendEnvelope.filter(item => item[1] !== id)
   // sendEnvelope =[]
   // Save receivedEnvelope to storage
@@ -190,14 +190,14 @@ ipcMain.on('pdf-file:send', (event, path)=>{
       contextIsolation: false
     }
   })
-  showPdfWindow.loadURL(path)
+  showPdfWindow.loadFile(path)
   showPdfWindow.setMenu(null)
 })
 function createAboutWindow() {
   aboutWindow = new BrowserWindow({
     title: 'About Simorgh office',
     width: 300,
-    height: 350,
+    height: 327,
     resizable: false,
     icon: __dirname + "/ClientApp/assets/icons/letter2.png",
     webPreferences: {
@@ -211,10 +211,15 @@ function createAboutWindow() {
 }
 const menu = [
   {
-        label: 'About',
-        click:() => createAboutWindow()
+        label: 'simorgh',
+        submenu: [
+          {label: 'About',
+            click:() => createAboutWindow()
+          },
+          {role: 'reload'},
+        ]
   },
-  ...(isDev ? [
+  ...(dev ? [
     {
       label: 'Developer',
       submenu: [
